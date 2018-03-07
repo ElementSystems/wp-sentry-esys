@@ -124,7 +124,6 @@
        if ($sentryTest) {
            $ex = new \Exception("Activated the Sentry test in Wordpress. [Sentry ESYS]");
            $client->captureException($ex);
-           $client->captureMessage('my log message');
        }
    }
 
@@ -149,7 +148,7 @@
 
        $ex = new \Exception("Test Parameters Sentry ESYS");
        $client->captureException($ex);
-       
+
        $result = "<b>DSN:</b> ".$dsn
                  ."<br> <b>PATH CA:</b> ".$pathCa
                  ."<br> <b>SentryTest:</b> ".$sentryTest
