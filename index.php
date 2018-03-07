@@ -122,7 +122,7 @@
        $error_handler->registerShutdownFunction();
 
        if ($sentryTest) {
-           $ex = new \Exception("Activated the Snetry test in Wordpress. [Sentry ESYS]");
+           $ex = new \Exception("Activated the Sentry test in Wordpress. [Sentry ESYS]");
            $client->captureException($ex);
        }
    }
