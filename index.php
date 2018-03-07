@@ -1,7 +1,7 @@
 <?php
     /*
-    Plugin Name: Sentry ESYS
-    Plugin URI: http://www.elementsystems.de
+    Plugin Name: Wp Sentry ESYS
+    Plugin URI: https://github.com/ElementSystems/wp-sentry-esys
     Description: Activation Sentry in Wordpress.
     Author: ElementSystems.de
     Version: 0.1
@@ -127,6 +127,32 @@
        }
    }
 
+   /**
+    * Testing parameters
+    * @return string The Parameters
+    */
+   function sentryTesting()
+   {
+       require_once 'sentry-php-master/lib/Raven/Autoloader.php';
+       Raven_Autoloader::register();
+
+       $dsn    = get_option('dsn');
+       $pathCa = get_option('path_ca');
+       $sentryTest = get_option('sentry_test');
+       $client = new Raven_Client($dsn, array( 'ca_cert' => $pathCA));
+       $error_handler = new Raven_ErrorHandler($client);
+       $error_handler->registerExceptionHandler();
+       $error_handler->registerErrorHandler();
+       $error_handler->registerShutdownFunction();
+
+       $ex = new \Exception("Test Parameters Sentry ESYS");
+       $client->captureException($ex);
+
+       return $dsn ." - " ." - ".$pathCa." - ".$sentryTest. " ".$client->captureException($ex);
+   }
+
+
+add_shortcode('sentry', 'sentryTesting');
 add_action('admin_menu', 'sentry_plugin_menu');
 add_action('admin_init', 'sentry_content_settings');
 add_action('init', 'sentry');
