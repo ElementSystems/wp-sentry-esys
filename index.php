@@ -124,11 +124,12 @@
        if ($sentryTest) {
            $ex = new \Exception("Activated the Sentry test in Wordpress. [Sentry ESYS]");
            $client->captureException($ex);
+           $client->captureMessage('my log message');
        }
    }
 
    /**
-    * Testing parameters
+    * Testing parameters with add_shortcode -> [sentryTesting]
     * @return string The Parameters
     */
    function sentryTesting()
@@ -139,6 +140,7 @@
        $dsn    = get_option('dsn');
        $pathCa = get_option('path_ca');
        $sentryTest = get_option('sentry_test');
+
        $client = new Raven_Client($dsn, array( 'ca_cert' => $pathCA));
        $error_handler = new Raven_ErrorHandler($client);
        $error_handler->registerExceptionHandler();
@@ -147,12 +149,18 @@
 
        $ex = new \Exception("Test Parameters Sentry ESYS");
        $client->captureException($ex);
-
-       return $dsn ." - " ." - ".$pathCa." - ".$sentryTest. " ".$client->captureException($ex);
+       
+       $result = "<b>DSN:</b> ".$dsn
+                 ."<br> <b>PATH CA:</b> ".$pathCa
+                 ."<br> <b>SentryTest:</b> ".$sentryTest
+                 ."<br> <b>ID EXCEPTION:</b> ".$client->captureException($ex)
+                 ."<br> <b>Exception Message:</b>".$ex->getMessage()
+                 ."<br> <b>CA:</b> <br>" . file_get_contents($pathCa);
+       return $result;
    }
 
 
-add_shortcode('sentry', 'sentryTesting');
+add_shortcode('sentryTesting', 'sentryTesting');
 add_action('admin_menu', 'sentry_plugin_menu');
 add_action('admin_init', 'sentry_content_settings');
 add_action('init', 'sentry');
