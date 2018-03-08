@@ -23,7 +23,6 @@
   <?php
   settings_fields('display_settings');
   do_settings_sections('display_settings');
-
    ?>
    <label>DSN:</label>
    <div><?php

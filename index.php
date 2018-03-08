@@ -34,60 +34,7 @@
     }
 
 
-    /**
-     * Configuration form for the plugin
-     * @return void
-     */
-    function SentrySettings()
-    {
-        ?>
-      <div class="wrap">
-        <h2>Sentry Settings</h2>
-        <form method="POST" action="options.php">
-          <?php
-          settings_fields('sentry_group');
-        do_settings_sections('sentry_group'); ?>
-           <label>DSN:</label>
-           <div><?php
-           if (get_option('dsn') != '') {
-               echo "<small style='color:#848484;'>Current DSN.</small>";
-           } else {
-               echo "<small style='color:#8A0808;'>No stored data</small>";
-           } ?></div>
-           <input type="text" style="width:100%;"
-                  name="dsn"
-                  id="dsn"
-                  value="<?php echo get_option('dsn'); ?>" />
-          <div>
-        <hr>
-          <label>PATH CA:</label>
-            <div><?php
-          if (get_option('path_ca') != '') {
-              echo "<small style='color:#848484;'>Current Path_Ca.</small>";
-          } else {
-              echo "<small style='color:#8A0808;'>No stored data</small>";
-          } ?></div>
-          <input type="text" style="width:100%;"
-                 name="path_ca"
-                 id="path_ca"
-                 value="<?php echo get_option('path_ca'); ?>" />
-          <hr>
-          <label>Activate test</label>
-          <?php
-          $isChecked = "";
-        if (get_option('sentry_test')) {
-            $isChecked = "checked";
-        } ?>
-          <input type="checkbox" <?php echo $isChecked; ?>
-                  name="sentry_test"
-                  id="sentry_test" >
-          <?php submit_button(); ?>
-         </form>
-      </div>
-    <?php
-    }
-
-
+    
     /**
      * Store data
      * @return void
