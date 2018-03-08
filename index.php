@@ -19,13 +19,14 @@
         if (get_option('sentry_test')) {
             $mode = " In test mode";
         }
-        add_menu_page(
-            'Sentry Configuration',     // Title Page
+        add_options_page(
+            'Sentry',     // Title Page
             'Sentry Settings <br><span style="color:#F5A9A9">' . $mode . "</span>",          // Title menu
             'administrator',            // Rol access
             'sentry-configuration',    // Id page Options
             'SentrySettings',          // function configuration plugin
             'dashicons-admin-generic'  // Icon menu
+
 
       );
     }
@@ -111,7 +112,7 @@
        $sentryTest = get_option('sentry_test');
 
        if ($pathCa != '') {
-           $client = new Raven_Client($dsn, array( 'ca_cert' => $pathCA));
+           $client = new Raven_Client($dsn, array( 'ca_cert' => $pathCa));
        } else {
            $client = new Raven_Client($dsn);
        }
