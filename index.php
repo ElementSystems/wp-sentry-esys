@@ -15,21 +15,24 @@
      */
     function sentry_plugin_menu()
     {
-        $mode = "";
-        if (get_option('sentry_test')) {
-            $mode = " In test mode";
-        }
         add_options_page(
-            'Sentry',     // Title Page
-            'Sentry Settings <br><span style="color:#F5A9A9">' . $mode . "</span>",          // Title menu
+            'Sentry',                   // Title Page
+            'Sentry Settings',          // Title menu
             'administrator',            // Rol access
-            'sentry-configuration',    // Id page Options
-            'SentrySettings',          // function configuration plugin
-            'dashicons-admin-generic'  // Icon menu
+            'sentry_configuration',    // Id page Options
+            'SentryOptions'          // function configuration plugin
+
 
 
       );
     }
+
+
+    function SentryOptions()
+    {
+        include_once('templates/settings.php');
+    }
+
 
     /**
      * Configuration form for the plugin
@@ -91,9 +94,8 @@
      */
     function sentry_content_settings()
     {
-        register_setting('sentry_group', 'dsn', 'stringval');
-        register_setting('sentry_group', 'path_ca', 'stringval');
-        register_setting('sentry_group', 'sentry_test', 'booleanval');
+        register_setting('display_settings', 'dsn', 'stringval');
+        register_setting('display_settings', 'path_ca', 'stringval');
     }
 
 
