@@ -17,7 +17,28 @@
 </h2>
 
 <div style='<?php echo $active_tab == 'display_testing' ? 'display: block;' : 'display: none;'; ?>'>
-  TEST
+
+
+<?php
+
+    if ($_GET['testing'] == 'on') {
+        ?>
+        <h2>Test result</h2>
+        <?php
+        $ex = new \Exception("Test ".NAME_PLUGIN);
+        testConection(get_option('_sentry_dsn'));
+    } else {
+        ?>
+      <h2>Testing... </h2>
+      <p>Press the <b>Run test</b> button to execute the test.</p>
+      <?php
+    }
+
+
+?>
+<br>
+<a href="?page=sentry_configuration&testing=on&tab=display_testing" class="button button-primary">Run test</a>
+
 </div>
 <form method="POST" action="options.php" style='<?php echo $active_tab == 'display_settings' ? 'display: block;' : 'display: none;'; ?>'>
   <?php
@@ -26,35 +47,30 @@
    ?>
    <label>DSN:</label>
    <div><?php
-   if (get_option('dsn') != '') {
+   if (get_option('_sentry_dsn') != '') {
        echo "<small style='color:#848484;'>Current DSN.</small>";
    } else {
        echo "<small style='color:#8A0808;'>No stored data</small>";
    } ?></div>
    <input type="text" style="width:100%;"
-          name="dsn"
+          name="_sentry_dsn"
           id="dsn"
-          value="<?php echo get_option('dsn'); ?>" />
+          value="<?php echo get_option('_sentry_dsn'); ?>" />
   <div>
 <hr>
-  <label>PATH CA:</label>
+  <label>CA Certificate:</label>
     <div><?php
-  if (get_option('path_ca') != '') {
-      echo "<small style='color:#848484;'>Current Path_Ca.</small>";
+  if (get_option('_sentry_certificate') != '') {
+      echo "<small style='color:#848484;'>Current Certificate CA.</small>";
   } else {
       echo "<small style='color:#8A0808;'>No stored data</small>";
   } ?></div>
-  <input type="text" style="width:100%;"
-         name="path_ca"
-         id="path_ca"
-         value="<?php echo get_option('path_ca'); ?>" />
-  <hr>
-  <label>Activate test</label>
-  <?php
-  $isChecked = "";
-if (get_option('sentry_test')) {
-    $isChecked = "checked";
-} ?>
+
+  <textarea style="width:100%; height:500px; overflow:scroll;" name="_sentry_certificate"
+            id="_sentry_certificate">
+    <?php echo get_option('_sentry_certificate'); ?>
+  </textarea>
+
 
   <?php submit_button(); ?>
  </form>
