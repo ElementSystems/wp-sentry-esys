@@ -4,7 +4,7 @@ Plugin for the integration of Sentry in wordpress.
 
 ## Configuration
 
-1. Download the code: [wp-Sentry On-Premise in GitHub](https://github.com/ElementSystems/wp-sentry-esys/archive/master.zip)
+1. Download the code: [wp-Sentry On-Premise in GitHub](https://github.com/ElementSystems/wp-sentry-on-premise/archive/master.zip)
 2. Put the folder inside the directory: ``` YOUR-WORDPRESS/PATH/TO/plugins/```
 3. Go to the wordpress administration panel in the Plugins section and activate it.
 4. In the wordpress administration menu, a new option called ```Sentry Settings ``` appears. Enter in this section to configure.
@@ -33,5 +33,5 @@ In case of an error during the test, you will receive information about the erro
 
 - *Author*: ElementSystems.de
 - *Autor URI*: [ElementSystems.de](https://www.elementsystems.de)
-- *Plugin URL*: [GitHub ElementSystems](https://github.com/ElementSystems/wp-sentry-esys)
-- *Download Plugin URI*:  [wp-Sentry ESYS in GitHub](https://github.com/ElementSystems/wp-sentry-esys/archive/master.zip)
+- *Plugin URL*: [GitHub ElementSystems](https://github.com/ElementSystems/wp-sentry-on-premise)
+- *Download Plugin URI*:  [wp-Sentry ESYS in GitHub](https://github.com/ElementSystems/wp-sentry-on-premise/archive/master.zip)
