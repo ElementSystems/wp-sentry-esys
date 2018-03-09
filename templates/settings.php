@@ -30,6 +30,8 @@
     } else {
         ?>
       <h2>Testing... </h2>
+      <p>- We will make a connection and we will receive some parameters in response. <br>
+        - We will send an event (Exception) to Sentry, the event will be reflected in Sentry.</p>
       <p>Press the <b>Run test</b> button to execute the test.</p>
       <?php
     }

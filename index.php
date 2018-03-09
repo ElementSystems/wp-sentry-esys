@@ -8,7 +8,7 @@
     Autor URI: http://www.elementsystems.de
      */
 
-     define('NAME_PLUGIN', "Wp Sentry ESYS");
+     define('NAME_PLUGIN', "Wp Sentry On-Premise");
 
     /**
      * Data for the wordpress administration menu
@@ -22,14 +22,16 @@
             'administrator',         // Rol access
             'sentry_configuration',  // Id page Options
             'SentryOptions'          // function configuration plugin
-
-
-
       );
     }
 
 
 
+    /**
+     * testing connection plugin with Sentry
+     * @param  string $dsn The DSN provided by Sentry
+     * @return void
+     */
     function testConection($dsn = '')
     {
         $buttonRunTest = '<br><a href="?page=sentry_configuration&testing=on&tab=display_testing" class="button button-primary">Run test</a>';
@@ -85,9 +87,13 @@
         echo '<h3 style="color:green;">Done!</h3><br>';
     }
 
+
+
+    /**
+     * We load the template with options and testing.
+     */
     function SentryOptions()
     {
-        //include_once('sentry-php-master/bin/sentry');
         include_once('templates/settings.php');
     }
 
@@ -105,7 +111,6 @@
 
 
 
-
     /**
      * Activation and configuration of Sentry
      * @return void
@@ -115,12 +120,16 @@
        require_once 'sentry-php-master/lib/Raven/Autoloader.php';
        Raven_Autoloader::register();
 
+       // We collect the data stored in the database of our wordpress.
        $dsn    = get_option('dsn');
        $certificate = get_option('_sentry_certificate');
 
-       $temp = tempFilecertificate();
+       // Creation of the temporary file.
+       $temp = tmpfile();
+       fwrite($temp, $certificate);
+       fseek($temp, 0);
 
-
+       // We create the Rave client with or without the path of the certificate.
        if ($certificate != '') {
            $client = new Raven_Client($dsn, array( 'ca_cert' => $temp));
        } else {
@@ -136,23 +145,6 @@
        fclose($temp);
    }
 
-   function tempFilecertificate()
-   {
-       $certificate = get_option('_sentry_certificate');
-       $temp = tmpfile();
-       fwrite($temp, $certificate);
-       fseek($temp, 0);
-       return $temp;
-   }
-
-   /**
-    * Testing parameters with add_shortcode -> [sentryTesting]
-    * @return string The Parameters
-    */
-   function sentryTesting()
-   {
-       $ex = new \Exception("Test Parameters Sentry ESYS");
-   }
 
 
 add_shortcode('sentryTesting', 'sentryTesting');
