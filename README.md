@@ -25,7 +25,9 @@ Within the section you should simply press the ```Run test``` button.
 
 If everything goes well, you will receive the response from a connection to your Sentry Server.
 
-The process sends an event which can be seen reflected in your Sentry administration panel. In case of an error during the test, you will receive information about the error that has occurred.
+The process sends an event which can be seen reflected in your Sentry administration panel.
+
+In case of an error during the test, you will receive information about the error that has occurred.
 
 ## Author
 

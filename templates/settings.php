@@ -1,3 +1,72 @@
+<style>
+.helpButton {
+float: right;
+background-color: #58ACFA;
+color: #ffffff;
+text-align: center;
+font-weight: bold;
+margin-top: 4px;
+cursor: pointer;
+border-radius: 50px;
+   padding: 2px;
+   width: 15px;
+   height: 15px;
+}
+
+.help-display {
+  display: none;
+  background-color: #ffffff;
+  padding: 5px;
+  margin: 5px;
+  border-left: 4px solid #58ACFA;
+}
+
+.help-display p {
+  margin-top: -15px;
+  padding-bottom: 20px;
+}
+
+.help-display h4 {
+  color:#58ACFA;
+}
+</style>
+
+
+<script>
+jQuery(function ($) {
+
+
+  $(".help").click(function () {
+
+    var status = $('#' + $(this).data( "help" ) ).data( "status");
+
+    if( status == 'close') {
+      $('#' + $(this).data( "help" )  ).css( "display", 'block' );
+      //$('#' + $(this).data( "help" ) ).fadeOut( "slow" );
+$('#' + $(this).data( "help" ) ).data( "status", 'open');
+
+
+    } else if (status == 'open') {
+
+        //  $('#' + $(this).data( "help" ) ).fadeIn( "slow" );
+          $('#' + $(this).data( "help" )  ).css( "display", 'none' );
+
+          $('#' + $(this).data( "help" ) ).data( "status", 'close');
+        };
+
+        //
+        // var valueStatus = (status == 'close')? 'open' : status;
+        //
+        // $('#' + $(this).data( "help" ) ).data( "status", valueStatus);
+
+
+     });
+
+
+});
+
+
+</script>
 <div class="wrap">
 <h2>Wp Sentry ESYS</h2>
 <p>Options for Sentry configuration in Wordpress.</p>
@@ -47,7 +116,23 @@
   settings_fields('display_settings');
   do_settings_sections('display_settings');
    ?>
-   <label>DSN:</label>
+   <br><label>DSN:</label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
+   <div id="help-dsn" class="help-display"  data-status="close">
+     <h4>What is DSN?</h4>
+      <p>
+        The DSN is the identifying url provided by Sentry to connect your wordpress with the Sentry server.
+      </p>
+   <h4>Where can I get my DSN?</h4>
+   <p>
+     You can find the DSN in your Servero Snetry Projects settings / Client Password (DSN).
+   </p>
+   <h4>What does a DSN look like?</h4>
+   <p>
+     It has a format similar to this ...
+     <br>
+     <b style="color:#848484;">https://abc123cde456@sentry.xxxxx.com/1234</b>
+   </p>
+   </div>
    <div><?php
    if (get_option('_sentry_dsn') != '') {
        echo "<small style='color:#848484;'>Current DSN.</small>";
@@ -60,7 +145,31 @@
           value="<?php echo get_option('_sentry_dsn'); ?>" />
   <div>
 <hr>
-  <label>CA Certificate:</label>
+
+  <br><label>CA Certificate: </label><div class="helpButton help" title="See help: CA Certificate" data-help="help-certificate" id="help" >?</div>
+   <div id="help-certificate"  class="help-display" data-status="close">
+     <h4>What is the CA certificate?</h4>
+     <p  class="parrafHelp">A CA acts as a trusted third party—trusted both by the subject (owner) of the certificate and by the party relying upon the certificate.
+     </p>
+     <h4>Do I need to fill in this information?</h4>
+     <p>
+       In the event that your server works under SSL, you will need to obtain the CA Certificate from the SSL of your Sentry server.
+     </p>
+     <h4>How can I get the CA certificate?</h4>
+     <p>In the event that the Sentry server works under SSL. You should request it from your provider or hosting administrator.
+     </p>
+     <h4>What does a CA certificate look like?</h4>
+     <p><span style="color:#848484;">
+       -----BEGIN CERTIFICATE-----<br>
+MIIE3DCCA8SgAwIBAgIQPiM0Wu0sClkyMzU5NTlaMGUxCzAJBgw0BAQsFADCBrjELMAkGA1UE<br>
+BhMCVVMxFTAsadasdasdasdwwwdmamreedklasmdklncjknjansjnsjnydGlmaWNhdGlvbiBTZXJ2<br>
+...<br>
+...<br>
+...<br>
+9iDhjr+fCY7lCOiSk3c+SUScf+l5nf9Lr+A4VzQNXxEyEpKpYYiBpR74oPBFWoZxIIWF<br>
+-----END CERTIFICATE-----<br></span>
+     </p>
+   </div>
     <div><?php
   if (get_option('_sentry_certificate') != '') {
       echo "<small style='color:#848484;'>Current Certificate CA.</small>";
