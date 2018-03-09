@@ -1,32 +1,31 @@
-# WP Sentry ESYS
+# WP Sentry On-Premise
 
 Plugin for the integration of Sentry in wordpress.
 
 ## Configuration
 
-1. Download the code: [wp-Sentry ESYS in GitHub](https://github.com/ElementSystems/wp-sentry-esys/archive/master.zip)
+1. Download the code: [wp-Sentry On-Premise in GitHub](https://github.com/ElementSystems/wp-sentry-esys/archive/master.zip)
 2. Put the folder inside the directory: ``` YOUR-WORDPRESS/PATH/TO/plugins/```
 3. Go to the wordpress administration panel in the Plugins section and activate it.
 4. In the wordpress administration menu, a new option called ```Sentry Settings ``` appears. Enter in this section to configure.
 
 ### Configuration options
 
-Within the ```Sentry Settings``` section we have 3 options:
+Within the ```Sentry Settings``` section we have 2 options:
 
 - **DSN** :  It is the DSN provided by Sentry. It has the following format: ``` https://xxx...@sentry.io/xxx..```
-- **Path CA** : Here we must indicate the PATah of our CA Certificate file.
-- **Activate test** : Activating this option generates an error. If everything went well in our Sentry, the generated error should appear with the following legend: ``` Activated the Sentry test in Wordpress. [Sentry ESYS] ```.
-This function is simply to verify that we receive exceptions in our Sentry.
+- **Certificat CA** : Here you have to paste the text of your Certificate CA (The CA of your servant Sentry). This option will create the Rave Client with or without the ```ca_cert``` attribute, in case of not specifying the CA Certificate, the Rave Client will be created without the ```ca_cert``` attribute.
+
 
 ### Testing
 
-#### Connection with Sentry
-We can receive an Exception to check the Wordpress communication with Sentry by activating the "Activate test" option. This option executes an exption that may be visible in our Sentry.
+In the configuration of WP Sentry On-Premise there is a section called ```Connection testing```. Within this area, make a test of connectivity and operation.
 
-#### Test Parameters and CA
-We can also check if the parameters are coming right to our plugin. We can also view the CA Certification file, so we understand that the path to our CA is correct.
+Within the section you should simply press the ```Run test``` button.
 
-For this we must use the shortcode ```[sentryTesting]```. This shortcode will print the parameters and the CA file.
+If everything goes well, you will receive the response from a connection to your Sentry Server.
+
+The process sends an event which can be seen reflected in your Sentry administration panel. In case of an error during the test, you will receive information about the error that has occurred.
 
 ## Author
 
