@@ -1,7 +1,7 @@
 <?php
     /*
-    Plugin Name: Wp Sentry ESYS
-    Plugin URI: https://github.com/ElementSystems/wp-sentry-esys
+    Plugin Name: Wp Sentry On-Premise
+    Plugin URI: https://github.com/ElementSystems/wp-sentry-on-premise
     Description: Activation Sentry in Wordpress.
     Author: ElementSystems.de
     Version: 0.1
