@@ -74,7 +74,8 @@ jQuery(function ($) {
 <div style='<?php echo $active_tab == 'display_testing' ? 'display: block;' : 'display: none;'; ?>'>
 
     <?php
-        if ($_GET['testing'] == 'on') {
+
+        if (isset($_GET['testing'])) {
             ?>
             <h2>Test result</h2>
             <?php
@@ -98,7 +99,8 @@ jQuery(function ($) {
   settings_fields('display_settings');
   do_settings_sections('display_settings');
    ?>
-   <br><label>DSN:</label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
+
+   <br><label>DSN: </label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
    <div id="help-dsn" class="help-display"  data-status="close">
      <h4>What is DSN?</h4>
       <p>
@@ -135,10 +137,10 @@ jQuery(function ($) {
      </p>
      <h4>Do I need to fill in this information?</h4>
      <p>
-       In the event that your server works under SSL, you will need to obtain the CA Certificate from the SSL of your Sentry server.
+       In the event that your server works with SSL, you will need to obtain the CA Certificate from your the SSL Sentry server.
      </p>
      <h4>How can I get the CA certificate?</h4>
-     <p>In the event that the Sentry server works under SSL. You should request it from your provider or hosting administrator.
+     <p>In the event that the Sentry server works with SSL. You should request it from your provider or hosting administrator.
      </p>
      <h4>What does a CA certificate look like?</h4>
      <p><span style="color:#848484;">

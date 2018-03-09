@@ -9,6 +9,7 @@
      */
 
      define('NAME_PLUGIN', "Wp Sentry On-Premise");
+     define('PATH_CERTIFICATE', __DIR__ . '/../../../wp-includes/certificates/ce-sentry.ca.pem');
 
     /**
      * Data for the wordpress administration menu
@@ -45,12 +46,17 @@
             exit("<span class='dashicons dashicons-no' style='color:red;'></span> ERROR: There was an error parsing your DSN:<br>  <div class='error notice'>" . $ex->getMessage()."</div>"
             .$buttonRunTest);
         }
+        $certificate = get_option('_sentry_certificate');
+        $temp = tmpfile();
+        fwrite($temp, $certificate);
+        fseek($temp, 0);
 
         $client = new Raven_Client($dsn, array(
           'trace' => true,
           'curl_method' => 'sync',
           'app_path' => realpath(__DIR__ . '/..'),
           'base_path' => realpath(__DIR__ . '/..'),
+          'ca_cert' => PATH_CERTIFICATE
       ));
 
         $config = get_object_vars($client);
@@ -59,7 +65,8 @@
         echo "<h3 style='color:gray;'>Client configuration: </h3>";
         foreach ($required_keys as $key) {
             if (empty($config[$key])) {
-                exit("<div class='error notice'><span class='dashicons dashicons-no' style='color:red;'></span> ERROR: Missing configuration for $key </div>");
+                exit("<div class='error notice'><span class='dashicons dashicons-no' style='color:red;'></span> ERROR: Missing configuration for $key </div>"
+                    .$buttonRunTest);
             }
             if (is_array($config[$key])) {
                 echo "<span class='dashicons dashicons-yes' style='color:green;'></span> $key: <b>[".implode(", ", $config[$key])."]</b> <br>";
@@ -80,11 +87,12 @@
         $last_error = $client->getLastError();
         if (!empty($last_error)) {
             exit("<div class='error notice'><span class='dashicons dashicons-no' style='color:red;'></span> ERROR: There was an error sending the test event: "
-            . $last_error. "</div>");
+            . $last_error. "</div>".$buttonRunTest);
         }
 
         echo "<br>";
         echo '<h3 style="color:green;">Done!</h3><br>';
+        fclose($temp);
     }
 
 
@@ -107,6 +115,12 @@
     {
         register_setting('display_settings', '_sentry_dsn', 'stringval');
         register_setting('display_settings', '_sentry_certificate', 'stringval');
+
+        $certificate = get_option('_sentry_certificate');
+
+        $file = fopen(PATH_CERTIFICATE, "w+");
+        fwrite($file, $certificate);
+        fclose($file);
     }
 
 
@@ -124,14 +138,11 @@
        $dsn    = get_option('dsn');
        $certificate = get_option('_sentry_certificate');
 
-       // Creation of the temporary file.
-       $temp = tmpfile();
-       fwrite($temp, $certificate);
-       fseek($temp, 0);
+
 
        // We create the Rave client with or without the path of the certificate.
        if ($certificate != '') {
-           $client = new Raven_Client($dsn, array( 'ca_cert' => $temp));
+           $client = new Raven_Client($dsn, array( 'ca_cert' => PATH_CERTIFICATE));
        } else {
            $client = new Raven_Client($dsn);
        }
@@ -140,14 +151,10 @@
        $error_handler->registerExceptionHandler();
        $error_handler->registerErrorHandler();
        $error_handler->registerShutdownFunction();
-
-
-       fclose($temp);
    }
 
 
 
-add_shortcode('sentryTesting', 'sentryTesting');
 add_action('admin_menu', 'sentry_plugin_menu');
 add_action('admin_init', 'sentry_content_settings');
 add_action('init', 'sentry');
