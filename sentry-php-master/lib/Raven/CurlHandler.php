@@ -37,6 +37,10 @@ class Raven_CurlHandler
         $this->join();
     }
 
+public function getStatus() {
+  return $this->status;
+}
+
     public function enqueue($url, $data = null, $headers = array())
     {
         $ch = curl_init();

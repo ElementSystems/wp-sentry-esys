@@ -28,7 +28,7 @@ class Raven_Client
     const FATAL = 'fatal';
 
     const MESSAGE_LIMIT = 1024;
-
+public $status = 'init';
     public $breadcrumbs;
     /**
      * @var Raven_Context
@@ -206,6 +206,7 @@ class Raven_Client
         if ($this->curl_method == 'async') {
             $this->_curl_handler = new Raven_CurlHandler($this->get_curl_options());
         }
+
 
         $this->transaction = new Raven_TransactionStack();
         if (static::is_http_request() && isset($_SERVER['PATH_INFO'])) {
