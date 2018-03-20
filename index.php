@@ -10,7 +10,7 @@
 
      define('NAME_PLUGIN', "WP Sentry On-Premise");
      define('PATH_CERTIFICATE', __DIR__ . '/../../../wp-includes/certificates/ce-sentry.ca.pem');
-
+     define('PATH_IMG', plugin_dir_url(__FILE__) .'images/throbber_12.gif');
 
 
     /**
@@ -27,6 +27,9 @@
             'SentryOptions'          // function configuration plugin
       );
     }
+
+
+
 
 
     /**
@@ -93,13 +96,17 @@
             . $last_error. "</div>".$buttonRunTest);
         }
 
-        // Get nameOrganitation and Project
+        // We look for the last event on the server.
         $result_organitation = json_decode(checkReceipt('/api/0/organizations/'));
         $result_project = json_decode(checkReceipt('/api/0/projects/'));
-
         $slug_organitation = $result_organitation[0]->slug;
-        $slug_project = $result_project[0]->slug;
+        $slug_project = '';
 
+        for ($i=0; $i < count($result_project); $i++) {
+            if ($result_project[$i]->id == $client->project) {
+                $slug_project = $result_project[$i]->slug;
+            }
+        }
         $result = json_decode(checkReceipt('/api/0/projects/'.$slug_organitation.'/'.$slug_project.'/events/'));
 
 
@@ -113,7 +120,8 @@
 
         echo '<h3 style="color:green;">Test Sentry-PHP Done!</h3><br>';
         echo "<hr><div id='requestJS' ><h2>Test JavaScript: </h2></div>";
-        completTestJS();
+
+        completTestJS($slug_organitation, $slug_project);
     }
 
 
@@ -123,7 +131,7 @@
      * been received in Sentry server.
      * @return void
      */
-    function completTestJS()
+    function completTestJS($slug_organitation, $slug_project)
     {
         ?>
         <script>
@@ -145,16 +153,18 @@
           }
           // We save the ID of the event to check if the Sentry Server has received it.
 
-
-
             var data = {
               'action': 'my_action',
-              'lastEventIdJS': lastEventJS
+              'lastEventIdJS':  lastEventJS,
+              'slug_organitation': '<?php echo $slug_organitation; ?>',
+              'slug_project': '<?php echo $slug_project; ?>'
+
             };
-$('#requestJS').append('<div id=\"loader_gif\" style="width=100%; text-align:centre;"><img style="width: 20px; height:20px;" src=\"/wordpress/wp-content/plugins/wp-sentry-on-premise/throbber_12.gif\"></div>');
+              $('#requestJS').append('<div id=\"loader_gif\" style="width=100%; text-align:centre;"><img style="width: 20px; height:20px;" src=\"<?php echo PATH_IMG; ?>\"></div>');
               jQuery.post(ajaxurl, data, function(response) {
 
-                if(response == 1) {
+
+                if(response == true) {
                   $('#requestJS').append('<span class=\"dashicons dashicons-yes\" style=\"color:green;\"></span>The event ID: <b><span id=\"lastEventID\">' +  lastEventJS + '</span></b> has been successfully sent to Sentry-server. <br>');
                   $('#requestJS').append('<h3 style="color:green;">Test Sentry-JavaScript Done!</h3><br><a href="?page=sentry_configuration&testing=on&tab=display_testing" class="button button-primary">Run test</a>');
 
@@ -179,16 +189,13 @@ $('#requestJS').append('<div id=\"loader_gif\" style="width=100%; text-align:cen
      */
     function my_action()
     {
-        $lastEventIdJS = $_POST['lastEventIdJS'];
+        sleep(3);
+        $lastEventIdJS      = $_POST['lastEventIdJS'];
+        $slug_organitation  = $_POST['slug_organitation'];
+        $slug_project       = $_POST['slug_project'];
 
-        // Get nameOrganitation and Project
-        $result_organitation = json_decode(checkReceipt('/api/0/organizations/'));
-        $result_project = json_decode(checkReceipt('/api/0/projects/'));
-
-        $slug_organitation = $result_organitation[0]->slug;
-        $slug_project = $result_project[0]->slug;
         $result = json_decode(checkReceipt('/api/0/projects/'.$slug_organitation.'/'.$slug_project.'/events/'));
-        $result_query =  ($result[0]->eventID == $lastEventIdJS)? 1:0;
+        $result_query =  ($result[0]->eventID == $lastEventIdJS)? true:null;
 
         wp_die($result_query); // this is required to terminate immediately and return a proper response
     }
@@ -207,16 +214,27 @@ $('#requestJS').append('<div id=\"loader_gif\" style="width=100%; text-align:cen
 
         $headers = array(
             'Content-Type:application/json',
-            'Authorization: Bearer '.get_option('_sentry_token'), //'a69385b07bed49189b8b06d2a509fb9895e964dc811c42baaf1febe729cf8598' // <---
+            'Authorization: Bearer '.get_option('_sentry_token'),
             );
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $_url);
+
+        $value_SSL = ($_SERVER['SERVER_NAME']!='localhost')? 2:0;
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $value_SSL);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $value_SSL);
+        curl_setopt($ch, CURLOPT_CAINFO, PATH_CERTIFICATE);
+        //curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
+
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); //timeout after 30 seconds
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $result = curl_exec($ch);
-        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);   //get status code
+        $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        echo curl_error($ch);
+
+
+        //get status code
         curl_close($ch);
 
 
