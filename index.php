@@ -4,7 +4,7 @@
     Plugin URI: https://github.com/ElementSystems/wp-sentry-on-premise
     Description: Activation Sentry in Wordpress.
     Author: ElementSystems.de
-    Version: 0.1
+    Version: 0.9
     Autor URI: http://www.elementsystems.de
      */
 
@@ -61,7 +61,8 @@
                   'curl_method' => 'sync',
                   'app_path' => realpath(__DIR__ . '/..'),
                   'base_path' => realpath(__DIR__ . '/..'),
-                  'ca_cert' => PATH_CERTIFICATE
+                  'ca_cert' => PATH_CERTIFICATE,
+                  'environment' => get_option('_sentry_environment')
               ));
 
         $config = get_object_vars($client);
@@ -263,6 +264,7 @@
         register_setting('display_settings', '_sentry_dsn', 'stringval');
         register_setting('display_settings', '_sentry_token', 'stringval');
         register_setting('display_settings', '_sentry_certificate', 'stringval');
+        register_setting('display_settings', '_sentry_environment', 'stringval');
 
         $certificate = get_option('_sentry_certificate');
 
@@ -290,9 +292,14 @@
 
        // We create the Rave client with or without the path of the certificate.
        if ($certificate != '') {
-           $client = new Raven_Client($dsn, array( 'ca_cert' => PATH_CERTIFICATE));
+           $client = new Raven_Client($dsn, array(
+                                            'ca_cert' => PATH_CERTIFICATE,
+                                            'environment' => get_option('_sentry_environment')
+                                            ));
        } else {
-           $client = new Raven_Client($dsn);
+           $client = new Raven_Client($dsn, array(
+                                            'environment' => get_option('_sentry_environment')
+                                            ));
        }
 
        $error_handler = new Raven_ErrorHandler($client);
@@ -314,7 +321,9 @@
        echo "<script src='https://cdn.ravenjs.com/3.23.1/raven.min.js' crossorigin='anonymous'></script>
             <script>
             try {
-                Raven.config('".$value_dsn_public."').install();
+                Raven.config('".$value_dsn_public."', {
+                                      environment: '".get_option('_sentry_environment')."'
+                                    }).install();
             }
             catch(e) {
             }

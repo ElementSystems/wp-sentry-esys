@@ -5,12 +5,15 @@ background-color: #58ACFA;
 color: #ffffff;
 text-align: center;
 font-weight: bold;
-margin-top: 4px;
+margin: 4px;
 cursor: pointer;
 border-radius: 50px;
-   padding: 2px;
-   width: 15px;
-   height: 15px;
+   width: 18px;
+   height: 18px;
+}
+
+.text-gray {
+  color:#848484;
 }
 
 .help-display {
@@ -95,7 +98,6 @@ The Plugin can detect PHP and JavaScript failures.</p>
             testConection(get_option('_sentry_dsn'));
         } else {
             ?>
-          <h2>Testing... </h2>
           <p>- We will make a connection and we will receive some parameters in response. <br>
             - We will send an event (Exception) to Sentry, the event will be reflected in Sentry.</p>
           <p>Press the <b>Run test</b> button to execute the test.</p>
@@ -114,7 +116,7 @@ The Plugin can detect PHP and JavaScript failures.</p>
   do_settings_sections('display_settings');
    ?>
 
-   <br><label>Token API Sentry-Server: </label><div class="helpButton help" title="See help: Token" data-help="help-token"  id="help">?</div>
+   <br><label><span class="text-gray">*</span> Token API Sentry-Server: </label><div class="helpButton help" title="See help: Token" data-help="help-token"  id="help">?</div>
    <div id="help-token" class="help-display"  data-status="close">
    <h4>What is Token?</h4>
     <p>
@@ -135,12 +137,13 @@ The Plugin can detect PHP and JavaScript failures.</p>
     </p>
    </div>
 
-   <div><?php
-   if (get_option('_sentry_token') != '') {
-       echo "<small style='color:#848484;'>Current Token.</small>";
-   } else {
-       echo "<small style='color:#8A0808;'>No stored data</small>";
-   } ?></div>
+   <div>
+     <?php
+       if (get_option('_sentry_token') == '') {
+           echo "<small style='color:#8A0808;'>No stored data</small>";
+       }
+     ?>
+  </div>
    <input type="text" style="width:100%;"
           name="_sentry_token"
           id="token"
@@ -148,7 +151,32 @@ The Plugin can detect PHP and JavaScript failures.</p>
   <div>
 
 <hr>
-<br><label>DSN: </label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
+<br><label>Environment: </label><div class="helpButton help" title="See help: Environment" data-help="help-environment"  id="help">?</div>
+<div id="help-environment" class="help-display"  data-status="close">
+  <h4>What is "environment"?</h4>
+    <p>
+      It is a parameter that you can configure to identify the procedure of the
+      incidents. For example: "production", "testing", "dev", etc.
+      <br><br>
+      <b>This parameter is not required, but it is recommended</b>.
+      <br> In case of   complementing this field. In sentry, no "environment" will be shown.
+    </p>
+</div>
+   <div>
+     <?php
+       if (get_option('_sentry_environment') == '') {
+           echo "<small style='color:#DF7401;'>No stored data. This parameter is not required.</small>";
+       }
+    ?>
+  </div>
+   <input type="text" style="width:100%;"
+          name="_sentry_environment"
+          id="environment"
+          value="<?php echo get_option('_sentry_environment'); ?>" />
+  <div>
+
+<hr>
+<br><label><span class="text-gray">*</span> DSN: </label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
 <div id="help-dsn" class="help-display"  data-status="close">
   <h4>What is DSN?</h4>
    <p>
@@ -167,12 +195,13 @@ The Plugin can detect PHP and JavaScript failures.</p>
     <b style="color:#848484;">https://abc123cde456@YOUR-SENTRY-SERVER-NAME.com/1234</b>
     </p>
 </div>
-   <div><?php
-   if (get_option('_sentry_dsn') != '') {
-       echo "<small style='color:#848484;'>Current DSN.</small>";
-   } else {
-       echo "<small style='color:#8A0808;'>No stored data</small>";
-   } ?></div>
+   <div>
+     <?php
+       if (get_option('_sentry_dsn') == '') {
+           echo "<small style='color:#8A0808;'>No stored data</small>";
+       }
+    ?>
+  </div>
    <input type="text" style="width:100%;"
           name="_sentry_dsn"
           id="dsn"
@@ -181,7 +210,7 @@ The Plugin can detect PHP and JavaScript failures.</p>
 
 <hr>
 
-  <br><label>CA Certificate: </label><div class="helpButton help" title="See help: CA Certificate" data-help="help-certificate" id="help" >?</div>
+  <br><label><span class="text-gray">*</span> CA Certificate: </label><div class="helpButton help" title="See help: CA Certificate" data-help="help-certificate" id="help" >?</div>
    <div id="help-certificate"  class="help-display" data-status="close">
      <h4>What is the CA certificate?</h4>
      <p>
@@ -209,19 +238,23 @@ The Plugin can detect PHP and JavaScript failures.</p>
       -----END CERTIFICATE-----<br></span>
      </p>
    </div>
-    <div><?php
-  if (get_option('_sentry_certificate') != '') {
-      echo "<small style='color:#848484;'>Current Certificate CA.</small>";
-  } else {
-      echo "<small style='color:#8A0808;'>No stored data</small>";
-  } ?></div>
+    <div>
+      <?php
+        if (get_option('_sentry_certificate') == '') {
+            echo "<small style='color:#8A0808;'>No stored data</small>";
+        }
+        ?>
+  </div>
 
   <textarea style="width:100%; height:500px; overflow:scroll;" name="_sentry_certificate"
             id="_sentry_certificate">
     <?php echo get_option('_sentry_certificate'); ?>
   </textarea>
 
-
+<hr>
+<p class="text-gray">
+  * Required fields.
+</p>
   <?php submit_button(); ?>
  </form>
 
