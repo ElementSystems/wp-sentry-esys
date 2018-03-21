@@ -12,6 +12,10 @@ border-radius: 50px;
    height: 18px;
 }
 
+.text-gray {
+  color:#848484;
+}
+
 .help-display {
   display: none;
   background-color: #ffffff;
@@ -112,7 +116,7 @@ The Plugin can detect PHP and JavaScript failures.</p>
   do_settings_sections('display_settings');
    ?>
 
-   <br><label>Token API Sentry-Server: </label><div class="helpButton help" title="See help: Token" data-help="help-token"  id="help">?</div>
+   <br><label><span class="text-gray">*</span> Token API Sentry-Server: </label><div class="helpButton help" title="See help: Token" data-help="help-token"  id="help">?</div>
    <div id="help-token" class="help-display"  data-status="close">
    <h4>What is Token?</h4>
     <p>
@@ -147,7 +151,32 @@ The Plugin can detect PHP and JavaScript failures.</p>
   <div>
 
 <hr>
-<br><label>DSN: </label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
+<br><label>Environment: </label><div class="helpButton help" title="See help: Environment" data-help="help-environment"  id="help">?</div>
+<div id="help-environment" class="help-display"  data-status="close">
+  <h4>What is "environment"?</h4>
+    <p>
+      It is a parameter that you can configure to identify the procedure of the
+      incidents. For example: "production", "testing", "dev", etc.
+      <br><br>
+      <b>This parameter is not required, but it is recommended</b>.
+      <br> In case of   complementing this field. In sentry, no "environment" will be shown.
+    </p>
+</div>
+   <div>
+     <?php
+       if (get_option('_sentry_environment') == '') {
+           echo "<small style='color:#DF7401;'>No stored data. This parameter is not required.</small>";
+       }
+    ?>
+  </div>
+   <input type="text" style="width:100%;"
+          name="_sentry_environment"
+          id="environment"
+          value="<?php echo get_option('_sentry_environment'); ?>" />
+  <div>
+
+<hr>
+<br><label><span class="text-gray">*</span> DSN: </label><div class="helpButton help" title="See help: DSN" data-help="help-dsn"  id="help">?</div>
 <div id="help-dsn" class="help-display"  data-status="close">
   <h4>What is DSN?</h4>
    <p>
@@ -181,7 +210,7 @@ The Plugin can detect PHP and JavaScript failures.</p>
 
 <hr>
 
-  <br><label>CA Certificate: </label><div class="helpButton help" title="See help: CA Certificate" data-help="help-certificate" id="help" >?</div>
+  <br><label><span class="text-gray">*</span> CA Certificate: </label><div class="helpButton help" title="See help: CA Certificate" data-help="help-certificate" id="help" >?</div>
    <div id="help-certificate"  class="help-display" data-status="close">
      <h4>What is the CA certificate?</h4>
      <p>
@@ -222,7 +251,10 @@ The Plugin can detect PHP and JavaScript failures.</p>
     <?php echo get_option('_sentry_certificate'); ?>
   </textarea>
 
-
+<hr>
+<p class="text-gray">
+  * Required fields.
+</p>
   <?php submit_button(); ?>
  </form>
 

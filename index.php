@@ -61,7 +61,8 @@
                   'curl_method' => 'sync',
                   'app_path' => realpath(__DIR__ . '/..'),
                   'base_path' => realpath(__DIR__ . '/..'),
-                  'ca_cert' => PATH_CERTIFICATE
+                  'ca_cert' => PATH_CERTIFICATE,
+                  'environment' => get_option('_sentry_environment')
               ));
 
         $config = get_object_vars($client);
@@ -263,6 +264,7 @@
         register_setting('display_settings', '_sentry_dsn', 'stringval');
         register_setting('display_settings', '_sentry_token', 'stringval');
         register_setting('display_settings', '_sentry_certificate', 'stringval');
+        register_setting('display_settings', '_sentry_environment', 'stringval');
 
         $certificate = get_option('_sentry_certificate');
 
