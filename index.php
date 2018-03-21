@@ -4,7 +4,7 @@
     Plugin URI: https://github.com/ElementSystems/wp-sentry-on-premise
     Description: Activation Sentry in Wordpress.
     Author: ElementSystems.de
-    Version: 0.1
+    Version: 0.9
     Autor URI: http://www.elementsystems.de
      */
 
