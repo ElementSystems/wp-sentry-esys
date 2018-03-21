@@ -95,7 +95,6 @@ The Plugin can detect PHP and JavaScript failures.</p>
             testConection(get_option('_sentry_dsn'));
         } else {
             ?>
-          <h2>Testing... </h2>
           <p>- We will make a connection and we will receive some parameters in response. <br>
             - We will send an event (Exception) to Sentry, the event will be reflected in Sentry.</p>
           <p>Press the <b>Run test</b> button to execute the test.</p>
@@ -135,12 +134,13 @@ The Plugin can detect PHP and JavaScript failures.</p>
     </p>
    </div>
 
-   <div><?php
-   if (get_option('_sentry_token') != '') {
-       echo "<small style='color:#848484;'>Current Token.</small>";
-   } else {
-       echo "<small style='color:#8A0808;'>No stored data</small>";
-   } ?></div>
+   <div>
+     <?php
+       if (get_option('_sentry_token') == '') {
+           echo "<small style='color:#8A0808;'>No stored data</small>";
+       }
+     ?>
+  </div>
    <input type="text" style="width:100%;"
           name="_sentry_token"
           id="token"
@@ -167,12 +167,13 @@ The Plugin can detect PHP and JavaScript failures.</p>
     <b style="color:#848484;">https://abc123cde456@YOUR-SENTRY-SERVER-NAME.com/1234</b>
     </p>
 </div>
-   <div><?php
-   if (get_option('_sentry_dsn') != '') {
-       echo "<small style='color:#848484;'>Current DSN.</small>";
-   } else {
-       echo "<small style='color:#8A0808;'>No stored data</small>";
-   } ?></div>
+   <div>
+     <?php
+       if (get_option('_sentry_dsn') == '') {
+           echo "<small style='color:#8A0808;'>No stored data</small>";
+       }
+    ?>
+  </div>
    <input type="text" style="width:100%;"
           name="_sentry_dsn"
           id="dsn"
@@ -209,12 +210,13 @@ The Plugin can detect PHP and JavaScript failures.</p>
       -----END CERTIFICATE-----<br></span>
      </p>
    </div>
-    <div><?php
-  if (get_option('_sentry_certificate') != '') {
-      echo "<small style='color:#848484;'>Current Certificate CA.</small>";
-  } else {
-      echo "<small style='color:#8A0808;'>No stored data</small>";
-  } ?></div>
+    <div>
+      <?php
+        if (get_option('_sentry_certificate') == '') {
+            echo "<small style='color:#8A0808;'>No stored data</small>";
+        }
+        ?>
+  </div>
 
   <textarea style="width:100%; height:500px; overflow:scroll;" name="_sentry_certificate"
             id="_sentry_certificate">
