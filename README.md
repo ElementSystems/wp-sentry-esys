@@ -11,10 +11,11 @@ Plugin for the integration of Sentry in wordpress.
 
 ### Configuration options
 
-Within the ```Sentry Settings``` section we have 3 options:
+Within the ```Sentry Settings``` section we have 4 options:
 
 - **Token** :  The Token of the Api of Sentry server. It is necessary to perform the function tests of the plugin itself. With it we can make sure that the plugin is working correctly.
 - **DSN** :  It is the DSN provided by Sentry. It has the following format: ``` https://xxx...@sentry.io/xxx..```
+- **Environment** :  It is a parameter that you can configure to identify the procedure of the incidents. For example: "production", "testing", "dev", etc. 
 - **Certificat CA** : Here you have to paste the text of your Certificate CA (The CA of your servant Sentry). This option will create the Rave Client with or without the ```ca_cert``` attribute, in case of not specifying the CA Certificate, the Rave Client will be created without the ```ca_cert``` attribute.
 
 
