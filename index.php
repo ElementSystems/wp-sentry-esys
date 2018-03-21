@@ -292,9 +292,14 @@
 
        // We create the Rave client with or without the path of the certificate.
        if ($certificate != '') {
-           $client = new Raven_Client($dsn, array( 'ca_cert' => PATH_CERTIFICATE));
+           $client = new Raven_Client($dsn, array(
+                                            'ca_cert' => PATH_CERTIFICATE,
+                                            'environment' => get_option('_sentry_environment')
+                                            ));
        } else {
-           $client = new Raven_Client($dsn);
+           $client = new Raven_Client($dsn, array(
+                                            'environment' => get_option('_sentry_environment')
+                                            ));
        }
 
        $error_handler = new Raven_ErrorHandler($client);
@@ -316,7 +321,9 @@
        echo "<script src='https://cdn.ravenjs.com/3.23.1/raven.min.js' crossorigin='anonymous'></script>
             <script>
             try {
-                Raven.config('".$value_dsn_public."').install();
+                Raven.config('".$value_dsn_public."', {
+                                      environment: '".get_option('_sentry_environment')."'
+                                    }).install();
             }
             catch(e) {
             }
