@@ -5,12 +5,11 @@ background-color: #58ACFA;
 color: #ffffff;
 text-align: center;
 font-weight: bold;
-margin-top: 4px;
+margin: 4px;
 cursor: pointer;
 border-radius: 50px;
-   padding: 2px;
-   width: 15px;
-   height: 15px;
+   width: 18px;
+   height: 18px;
 }
 
 .help-display {
