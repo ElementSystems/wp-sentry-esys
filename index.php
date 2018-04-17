@@ -1,6 +1,6 @@
 <?php
     /*
-    Plugin Name: WP Sentry On-Premise
+    Plugin Name: Error tracking with SENTRY (including on-premise)
     Plugin URI: https://github.com/ElementSystems/wp-sentry-on-premise
     Description: Activation Sentry in Wordpress.
     Author: ElementSystems.de
@@ -8,7 +8,7 @@
     Autor URI: http://www.elementsystems.de
      */
 
-     define('NAME_PLUGIN', "WP Sentry On-Premise");
+     define('NAME_PLUGIN', "Error tracking with SENTRY (including on-premise)");
      define('PATH_CERTIFICATE', __DIR__ . '/../../../wp-includes/certificates/ce-sentry.ca.pem');
      define('PATH_IMG', plugin_dir_url(__FILE__) .'images/throbber_12.gif');
 
